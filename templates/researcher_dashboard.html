@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl font-bold text-blue-900 mb-6 text-center">Researcher Dashboard - {{ username }}</h1>
+<div class="space-y-4">
+    <a href="{{ url_for('view_data') }}" class="btn block p-2 bg-blue-600 text-white rounded text-center">1. View Mineral/Country Data</a>
+    <a href="{{ url_for('export_data') }}" class="btn block p-2 bg-blue-600 text-white rounded text-center">2. Export Data</a>
+    <a href="{{ url_for('add_insight') }}" class="btn block p-2 bg-blue-600 text-white rounded text-center">3. Add Insights</a>
+    <a href="{{ url_for('view_interactive_map') }}" class="btn block p-2 bg-blue-600 text-white rounded text-center">4. View Interactive Map</a>
+    <a href="{{ url_for('view_insights') }}" class="btn block p-2 bg-blue-600 text-white rounded text-center">5. View Insights</a>
+    <a href="{{ url_for('logout') }}" class="btn block p-2 bg-gray-600 text-white rounded text-center">6. Logout</a>
+</div>
+{% endblock %}
