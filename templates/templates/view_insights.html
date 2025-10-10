@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl font-bold text-blue-900 mb-6 text-center">Insights</h1>
+{% if insights %}
+<table class="w-full text-blue-900">
+    <tr class="bg-blue-600 text-white">
+        {% for key in insights[0].keys() %}
+        <th class="p-2">{{ key }}</th>
+        {% endfor %}
+    </tr>
+    {% for insight in insights %}
+    <tr class="bg-white bg-opacity-50">
+        {% for value in insight.values() %}
+        <td class="p-2">{{ value }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p class="text-blue-900 text-center">No insights available.</p>
+{% endif %}
+<a href="{{ url_for(session['role'].lower() + '_dashboard') }}" class="btn block p-2 bg-gray-600 text-white rounded text-center mt-4">Back</a>
+{% endblock %}
