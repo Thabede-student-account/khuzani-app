@@ -4,13 +4,12 @@ import plotly.express as px
 import folium
 from folium.plugins import MarkerCluster
 import io
-import os
 from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'  # Replace with a secure key in production
 
-# Data dictionaries (same as before, with corrected coordinates)
+# Data dictionaries
 users_data = {
     'Thabede': {'password': 'Thabede@2025', 'role': 'Administrator'},
     'Rodney': {'password': 'password', 'role': 'Administrator'},
@@ -45,7 +44,7 @@ sites_data = [
     {'SiteID': 3, 'SiteName': 'Balama Graphite', 'CountryID': 3, 'MineralID': 3, 'Latitude': -13.3333, 'Longitude': 38.7667, 'Production_tonnes': 50000},
     {'SiteID': 4, 'SiteName': 'Otjozondu Manganese Project', 'CountryID': 4, 'MineralID': 4, 'Latitude': -20.13, 'Longitude': 16.13, 'Production_tonnes': 200000}
 ]
-insights_data = []  # Initially empty
+insights_data = []
 
 # Convert to DataFrames
 user_df = pd.DataFrame([{'Role': v['role'], 'Username': k, 'Password': v['password']} for k, v in users_data.items()])
@@ -79,6 +78,25 @@ def authenticate(username, password):
 def index():
     return render_template('login.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        role = request.form['role']
+        if role not in ['Investor', 'Researcher']:
+            return render_template('register.html', error="Invalid role. Only Investor or Researcher allowed.")
+        if not username or not password:
+            return render_template('register.html', error="All fields are required.")
+        if username in users_data:
+            return render_template('register.html', error="Username already exists.")
+        global user_df
+        users_data[username] = {'password': password, 'role': role}
+        user_df = pd.concat([user_df, pd.DataFrame({'Role': [role], 'Username': [username], 'Password': [password]})], ignore_index=True)
+        save_users()
+        return render_template('login.html', message="Registration successful. Please login.")
+    return render_template('register.html')
+
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
@@ -100,7 +118,7 @@ def logout():
 def admin_dashboard():
     if session.get('role') != 'Administrator':
         return redirect(url_for('index'))
-    return render_template('admin_dashboard.html', username=session['username'])
+    return render_template('admin_dashboard.html', username=session.get('username', 'Admin'))
 
 @app.route('/investor_dashboard')
 def investor_dashboard():
