@@ -1,6 +1,10 @@
+<!DOCTYPE html>
 {% extends 'base.html' %}
 {% block content %}
 <h1 class="text-2xl font-bold text-blue-900 mb-6 text-center">African Critical Minerals App</h1>
+{% if message %}
+<p class="text-green-500 text-center mb-4">{{ message }}</p>
+{% endif %}
 {% if error %}
 <p class="text-red-500 text-center mb-4">{{ error }}</p>
 {% endif %}
@@ -14,6 +18,7 @@
         <input type="password" name="password" id="password" class="w-full p-2 rounded bg-white bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
     <button type="submit" class="btn w-full p-2 bg-blue-600 text-white rounded">Login</button>
-    <a href="#" class="btn w-full p-2 bg-gray-600 text-white rounded text-center">Exit</a>
 </form>
+<a href="{{ url_for('register') }}" class="btn block p-2 bg-blue-600 text-white rounded text-center mt-4">Register as Investor/Researcher</a>
+<a href="#" class="btn block p-2 bg-gray-600 text-white rounded text-center mt-2">Exit</a>
 {% endblock %}
