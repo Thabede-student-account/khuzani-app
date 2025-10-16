@@ -1,6 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1 class="text-2xl font-bold text-blue-900 mb-6 text-center">Interactive Map</h1>
-<div class="w-full h-96">{{ map_html | safe }}</div>
-<a href="{{ url_for(session['role'].lower() + '_dashboard') }}" class="btn block p-2 bg-gray-600 text-white rounded text-center mt-4">Back</a>
-{% endblock %}
